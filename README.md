@@ -20,3 +20,5 @@ KursRepository zu Kurs Inhouse: SQL Server der ppedv AG
 9. SQL Alias
 
 10. feel free time.. Zeit für weitere Fragen
+
+11. 
