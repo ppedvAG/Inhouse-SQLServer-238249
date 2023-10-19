@@ -8,6 +8,7 @@ nur 1x pro Tabelle
 gut bei Bereichsabfragen, weil sortiert
 gut bei eindeutigen Werten 
 per SSMS wird immer beim PK ein CL IX gesetzt.. in vielen Fälle dumm
+--immer den zuerst pro Tabelle definieren, bevor du einen PK setzt
 
 
 NON CLUST IX

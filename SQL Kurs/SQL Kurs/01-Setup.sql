@@ -19,7 +19,7 @@ tempdb: eig HDDs sein (Log von Daten trennen)
 		IX Wartung
 
 		Anzahl der Datendateien = Anzahl der Kerne max 8
-		-T1117	alle DAteien gleich groﬂ  autom Wachsen
+		-T1117	alle Dateien gleich groﬂ  autom Wachsen
 		-T1118 uniform extents  eine Tabelle nur pro Block (latch)
 
 
