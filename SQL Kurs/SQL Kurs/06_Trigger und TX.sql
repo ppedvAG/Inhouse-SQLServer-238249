@@ -1,7 +1,7 @@
 drop table if exists o1
 drop table if exists t1
 
-select * into o1 from orders;
+select * into o1 from northwind..orders;
 Go
 
 create table t1 (id int)
@@ -31,17 +31,17 @@ rollback
 select * from t1
 
 ---instead of
-create table t2 (id int, spx int, spy int)
+create table t3 (id int, spx int, spy int)
 
 
-create or alter trigger trgdemo2 on t2
+create or alter trigger trgdemo2 on t3
 instead of insert
 as
-insert into t2
+insert into t3
 select id, spx*100, spy*100 from inserted
 
-insert into t2
+insert into t3
 select 1,2,3
 GO
 
-select * from t2
+select * from t3

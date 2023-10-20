@@ -77,7 +77,8 @@ Ausnahme: bei Massenimporten (ab ca 100000) werden die DS direkt in den Columnto
 
 
 
---Vorsicht: Index Scan ist nicht schlecht-- weniger Aufwand als Table Scan, aber SEEK wäre besser
+--Vorsicht: Index Scan ist nicht schlecht
+-- weniger Aufwand als Table Scan, aber SEEK wäre besser
 
 --Optimierer entscheidet sich für einen Scan , wenn dieser weniger Kosten als ein Seek verursacht
 --der Optimierer entscheidet sich für einen IX Scan, wenn dieser günstiger als ein Table Scan ist.
@@ -88,18 +89,32 @@ Ausnahme: bei Massenimporten (ab ca 100000) werden die DS direkt in den Columnto
 --Kann man unnütze IX finden: DMVs...!
 sys.dm_db_index_usage_Stats
 
-toDO mit Indizes: Defragmentieren , überflüssige entfernen und fehlende erstellen
---Wartungsplan
+toDO mit Indizes: 
+Defragmentieren -->Wartungsplan
+überflüssige entfernen 
+fehlende erstellen
 
+
+
+select * from sys.dm_db_index_usage_stats
+
+--1 = CL IX
+--0 = Heap
+--> 1   NCL IX
+
+
+
+
+
+
+Hilfreich:
 -- Brent Ozar SP_blitzIndex-- First Responder Kit 0 Euro
 
 --Wartung--> Wartungsplan: IX Rebuild IX Reorg Statistiken
-
---Stat:  akt nach 20% Änderung plus 500  zu spät, weil ab  ca 1% -- jeden Tag aktualisieren
-
 --IX Reorg ab 10% 
 --Rebuild ab 30%
 
+--Statistiken manuel aktualsieren: Würde 70% empfehlen...
 exec sp_updatestats
 
 
@@ -192,86 +207,7 @@ select companyname, lastname, productname
 from ku1
 where EmployeeID= 2 or Shipcountry = 'USA'
 
-
---Ind. Sicht
-
-select country, count(*) from ku1
-group by country
-
-
-create view vdemo
-as
-select country, count(*) as ANz from ku1
-group by country
-
-select * from vdemo
-
-select country, count(*) from ku1
-group by country
-
-create or alter view vdemo  with schemabinding
-as
-select country, count_big(*) as ANz from dbo.ku1
-group by country
-
-
---COLUMNSTORE
-select * into ku3 from ku
-
-
-select Companyname, avg(quantity), min(quantity)
-from ku1
-where
-		country = 'germany'
-group by CompanyName
-
-
-select Companyname, avg(quantity), min(quantity)
-from ku3
-where
-		country = 'germany'
-group by CompanyName
-
-
---Warum schneidet die KU3 bei jeder Abfrage , gleich oder besser ab
-
---Größe der KU und Größe der KU3
--- 600MB vs 4 MB
---Stimmt das oder nicht?
-
---es stimmt!!!!
---und das genauso im RAM
-
-
-
-select Companyname, avg(quantity), min(quantity)
-from ku3
-where
-		city = 'Berlin'
-group by CompanyName
-
-
 --INDIZES müssen gewartet werden
-
-
-
---Wartung der Indizes
---rebuild reorg
-
---rebuild ab Fragmentierung 30%
---reorg darunter
---unter 10 % nix
-
---Fehlende IX finden
---überflüssige IX entfernen
-
-select * from sys.dm_db_index_usage_stats
-
---1 = CL IX
---0 = Heap
---> 1   NCL IX
-
-
 
 
 
